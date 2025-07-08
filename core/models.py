@@ -85,4 +85,3 @@ class Todo(models.Model):
 
 
 
-

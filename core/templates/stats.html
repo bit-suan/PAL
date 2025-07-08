@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Productivity Stats</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}</h1>
+
+    <h2>📈 Productivity Summary</h2>
+    <ul>
+        <li>✅ Completed To-Dos: {{ completed_todos }}</li>
+        <li>🔥 Current Streak: {{ current_streak }} days</li>
+    </ul>
+
+    <h3>🗓️ Daily Activity</h3>
+    <ul>
+        {% for day in daily_streak %}
+            <li>{{ day.date }} - {{ day.activity|yesno:"Active,No Log" }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
