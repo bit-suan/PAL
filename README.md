@@ -1,6 +1,6 @@
 # 📘 PAL – Personal Academic Logger
 
-PAL (Personal Academic Logger) is a productivity-focused web and mobile application built to help university students log daily academic activities, manage to-do lists, set academic goals, and track productivity through visual streaks and graphs.
+PAL (Personal Academic Logger) is a comprehensive web application designed to help students and learners organize their academic journey through intelligent task management, activity tracking, and progress visualization.
 
 ---
 
@@ -10,6 +10,7 @@ PAL (Personal Academic Logger) is a productivity-focused web and mobile applicat
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [Environment Variables](#environment-variables)
+- [Project Structure](#Project-Structure)
 - [API Endpoints](#api-endpoints)
 - [Data Models](#data-models)
 - [Contributing](#contributing)
@@ -32,47 +33,74 @@ PAL (Personal Academic Logger) is a productivity-focused web and mobile applicat
 - **Backend**: Django, Django REST Framework
 - **Auth**: JSON Web Token (JWT)
 - **Database**: SQLite (initial MVP)
-- **Frontend**: React (web), React Native (mobile) *(optional for MVP)*
+- **Frontend**: HTML5 & CSS3, JavaScript (ES6+), Responsive Design
 - **API**: RESTful
 - **Documentation**: Swagger / Postman
 
 ---
+## ️ Installation
 
-## ⚙️ Installation
+### **Prerequisites**
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/pal-academic-logger.git
-   cd pal-academic-logger
-````
+- Python 3.8 or higher
+- Git
+- Virtual environment (recommended)
 
-2. **Create a virtual environment**:
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # For Windows: venv\Scripts\activate
-   ```
+### **Setup Instructions**
 
-3. **Install dependencies**:
+1. **Clone the repository**
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+```shellscript
+git clone https://github.com/bit-suan/PAL.git
+cd PAL
+```
+2. **Create and activate virtual environment**
 
-4. **Apply migrations**:
+```shellscript
+python -m venv venv
 
-   ```bash
-   python manage.py migrate
-   ```
+# On Windows
+venv\Scripts\activate
 
-5. **Run the development server**:
+# On macOS/Linux
+source venv/bin/activate
+```
 
-   ```bash
-   python manage.py runserver
-   ```
+3. **Install dependencies**
 
+```shellscript
+pip install -r requirements.txt
+```
+
+
+4. **Apply database migrations**
+
+```shellscript
+python manage.py makemigrations
+python manage.py migrate
+```
+
+
+5. **Create a superuser (optional)**
+
+```shellscript
+python manage.py createsuperuser
+```
+
+
+6. **Run the development server**
+
+```shellscript
+python manage.py runserver
+```
+
+
+7. **Access the application**
+
+1. Open your browser and go to `http://127.0.0.1:8000`
+2. Register a new account or login
 ---
-
 ## 🔐 Environment Variables
 
 Create a `.env` file in the root directory and configure:
@@ -82,32 +110,70 @@ SECRET_KEY=your_django_secret_key
 DEBUG=True
 ALLOWED_HOSTS=127.0.0.1,localhost
 ```
+## Project Structure
+
+```plaintext
+PAL/
+├── core/                      # Main application
+│   ├── migrations/           # Database migrations
+│   ├── templates/           # HTML templates
+│   │   ├── core/           # App-specific templates
+│   │   ├── registration/   # Auth templates
+│   │   └── base.html       # Base template
+│   ├── models.py           # Database models
+│   ├── views.py            # View functions
+│   ├── urls.py             # URL routing
+│   ├── forms.py            # Django forms
+│   ├── serializers.py      # DRF serializers
+│   └── admin.py            # Admin configuration
+├── pal_backend/             # Project settings
+│   ├── settings.py         # Django settings
+│   ├── urls.py             # Main URL configuration
+│   └── wsgi.py             # WSGI configuration
+├── static/                  # Static files (CSS, JS, images)
+├── media/                   # User uploaded files
+├── requirements.txt         # Python dependencies
+├── manage.py               # Django management script
+└── README.md               # Project documentation
+```
 
 ---
 
-## 📡 API Endpoints (Examples)
+## API Documentation
 
-### Auth
-
-* `POST /api/auth/register` – Register a new user
-* `POST /api/auth/login` – Login and receive JWT token
-
-### Logs
-
-* `POST /api/logs/` – Create a daily log
-* `GET /api/logs/` – Get user logs
-* `PUT /api/logs/<id>/` – Update a log
-* `DELETE /api/logs/<id>/` – Delete a log
-
-### Todos
-
-* `POST /api/todos/` – Create a to-do item
-* `GET /api/todos/` – List all to-dos
-* `PUT /api/todos/<id>/` – Update a to-do item
-* `DELETE /api/todos/<id>/` – Delete a to-do item
-
----
-
+### **Authentication Endpoints**
+```plaintext
+POST /login/          # User login
+POST /signup/         # User registration
+POST /logout/         # User logout
+```
+### **Dashboard Endpoints**
+```plaintext
+GET  /dashboard/      # Main dashboard view
+GET  /profile/        # User profile settings
+POST /profile/        # Update profile
+```
+### **Todo Management**
+```plaintext
+GET  /todos/          # List all todos
+POST /todos/          # Create new todo
+PUT  /todos/<id>/     # Update todo
+DELETE /todos/<id>/   # Delete todo
+POST /toggle-todo/<id>/ # Toggle todo status
+```
+### **Activity Logging**
+```plaintext
+GET  /logs/           # List activity logs
+POST /logs/           # Create new log entry
+GET  /logs/<id>/      # Get specific log
+PUT  /logs/<id>/      # Update log entry
+DELETE /logs/<id>/    # Delete log entry
+```
+### **Statistics**
+```plaintext
+GET  /stats/          # Get detailed statistics
+GET  /api/stats/      # JSON statistics data
+```
 ## 🧾 Data Models
 
 ### User
