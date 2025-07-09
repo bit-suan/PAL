@@ -1,32 +1,24 @@
-from django.urls import path, include
-from .views import (
-    RegisterView,
-    LogViewSet,
-    TodoViewSet,
-    ProductivityStatsView,
-    TodoSummaryView,
-    signup_view,
-    productivity_stats_view,
-)
-from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
-router = DefaultRouter()
-router.register(r'logs', LogViewSet, basename='log')
-router.register(r'todos', TodoViewSet, basename='todo')
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    # Authentication and Registration
-    path('register/', RegisterView.as_view(), name='register'),
-    path('signup/', signup_view, name='signup'),
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
-    # Stats and Dashboard
-    path('stats/productivity/', ProductivityStatsView.as_view(), name='productivity-stats'),
-    path('stats/todos/', TodoSummaryView.as_view(), name='todo-summary'),
-    path('dashboard/', productivity_stats_view, name='productivity-dashboard'),
-
-    # DRF ViewSets (CRUD logs & todos)
-    path('', include(router.urls)),
+    # Template views
+    path('', views.home_view, name='home'),
+    path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('signup/', views.signup_view, name='signup'),
+    path('logout/', views.logout_view, name='logout'),
+    path('logout-confirm/', views.logout_confirm_view, name='logout-confirm'),
+    
+    # Web views for managing data
+    path('manage-todos/', views.manage_todos, name='manage-todos'),
+    path('add-log-entry/', views.add_log_entry, name='add-log-entry'),
+    path('detailed-stats/', views.detailed_stats, name='detailed-stats'),  # Make sure this line exists
+    path('profile-settings/', views.profile_settings, name='profile-settings'),
+    
+    # AJAX endpoints
+    path('toggle-todo/<int:todo_id>/', views.toggle_todo, name='toggle-todo'),
+    path('delete-todo/<int:todo_id>/', views.delete_todo, name='delete-todo'),
+    
+    # API endpoints (if you want to keep them)
+    path('api/stats/', views.productivity_stats_view, name='api-stats'),
 ]

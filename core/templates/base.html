@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PAL - Personal Assistant for Learning{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Public pages container (no header) */
+        .public-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        .btn-logout {
+            background: #dc3545;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        
+        .btn-logout:hover {
+            background: #c82333;
+        }
+        
+        .btn-profile {
+            background: #28a745;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        
+        .btn-profile:hover {
+            background: #218838;
+        }
+        
+        .messages {
+            margin: 20px 0;
+        }
+        
+        .messages .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .messages .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        h1, h2, h3 {
+            color: #333;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Header Navigation - Hide on auth pages -->
+    {% if user.is_authenticated and '/login/' not in request.path and '/signup/' not in request.path and '/logout/' not in request.path %}
+    <div class="header">
+        <div class="header-content">
+            <a href="{% url 'dashboard' %}" class="logo">📚 PAL</a>
+            
+            <div class="nav-links">
+                <div class="user-info">
+                    <span>Welcome, <strong>{{ user.username }}</strong>!</span>
+                </div>
+                
+                {% block nav_links %}
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary"> Dashboard</a>
+                {% endblock %}
+                
+                <a href="{% url 'profile-settings' %}" class="btn btn-profile"> Profile</a>
+                <a href="{% url 'logout' %}" class="btn btn-logout"> Logout</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Container - different class based on whether nav is shown -->
+    <div class="{% if user.is_authenticated and '/login/' not in request.path and '/signup/' not in request.path and '/logout/' not in request.path %}container{% else %}public-container{% endif %}">
+        <!-- Display Django messages -->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="{% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Main content -->
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

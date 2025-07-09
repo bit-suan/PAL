@@ -1,0 +1,49 @@
+<!-- templates/core/add_log.html -->
+{% extends 'base.html' %}
+
+{% block title %}Add Log Entry - PAL{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1>📊 Add Log Entry</h1>
+        <a href="{% url 'dashboard' %}" class="btn" style="background: #6c757d;">← Back to Dashboard</a>
+    </div>
+
+    <!-- Add Log Form -->
+    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
+        <h3>➕ Log Your Progress</h3>
+        <form method="post" style="margin-top: 15px;">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label for="{{ form.description.id_for_label }}">What did you work on?</label>
+                {{ form.description }}
+            </div>
+            <button type="submit" class="btn">Add Log Entry</button>
+        </form>
+    </div>
+
+    <!-- Recent Logs -->
+    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h3> Recent Log Entries</h3>
+        {% if recent_logs %}
+            {% for log in recent_logs %}
+                <div style="padding: 15px; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <p style="margin: 0; color: #333;">{{ log.description }}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <small style="color: #999;">{{ log.date|date:"M d, Y H:i" }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: #666; padding: 40px;">
+                No log entries yet. Start tracking your progress! 📊
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

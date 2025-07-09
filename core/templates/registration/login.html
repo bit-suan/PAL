@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - PAL{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .login-container {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .logo {
+        font-size: 32px;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0,123,255,0.3);
+    }
+    
+    .btn-login {
+        width: 100%;
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+    
+    .btn-login:hover {
+        background: #0056b3;
+    }
+    
+    .signup-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+    
+    .signup-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="logo">📚 PAL</div>
+    <h2>Welcome Back!</h2>
+    <p style="color: #666; margin-bottom: 30px;">Sign in to continue your learning journey</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username:</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">Password:</label>
+            {{ form.password }}
+        </div>
+        
+        {% if form.errors %}
+            <div style="color: #dc3545; margin-bottom: 20px; text-align: left;">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        
+        <button type="submit" class="btn-login"> Sign In</button>
+    </form>
+    
+    <p>Don't have an account? <a href="{% url 'signup' %}" class="signup-link">Sign up here</a></p>
+</div>
+{% endblock %}
